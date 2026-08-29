@@ -35,7 +35,7 @@ The agent writes its own skills in the open [agentskills.io](https://agentskills
 ## Start here
 
 1. **Run the server** — [`server` → Getting Started](https://github.com/enclave-agent/server#-getting-started). Python 3.12+, `uv`, and a model endpoint that calls tools reliably (~20B+ on Ollama, or any OpenAI-compatible server).
-2. **Pair a client** — `enclave pair` prints a QR code; scan it from the iOS app or paste it into Desktop.
+2. **Pair the desktop app** — install [Enclave Desktop](https://github.com/enclave-agent/desktop), run `enclave pair --host <reachable-host>` on the server, and enter the 6-digit pairing code in the app.
 3. **Add plugins** — `uv add "enclave-capabilities[all] @ git+https://github.com/enclave-agent/capabilities"`.
 4. **Build your own client** — [`docs/client-guide.md`](https://github.com/enclave-agent/server/blob/main/docs/client-guide.md) is written so you can hand it to a coding agent and get a working client back.
 
