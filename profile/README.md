@@ -8,14 +8,18 @@
 |---|---|---|
 | **Server** | [`server`](https://github.com/enclave-agent/server) | The agent: Pydantic AI core, capability registry, memory pipeline, web search, loops / delegation / cron, skills with an approval gate, AG-UI + REST device protocol |
 | **Desktop** | [`desktop`](https://github.com/enclave-agent/desktop) | Electron client for macOS, Windows, and Linux |
+| **iOS** | *coming soon* | SwiftUI client for iPhone and iPad |
 | **Capabilities** | [`capabilities`](https://github.com/enclave-agent/capabilities) | Optional plugins: weather, YouTube, diagrams, GitHub, code repos, Apple integrations, budgets, travel |
 
 ## An app, not a bot
 
 Enclave doesn't live inside Telegram or Slack. Clients pair with your server once and speak an open, documented protocol — [AG-UI](https://docs.ag-ui.com) streaming for turns, REST for pairing, rotating refresh tokens, cross-device sync, push, and approval prompts.
 
-<p align="center"><img src="images/desktop-chat.png" alt="Enclave Desktop — a portfolio question answered with a table, streamed from the local server" width="900"></p>
-<p align="center"><sub>Enclave Desktop, paired to a self-hosted server.</sub></p>
+<table align="center"><tr>
+<td width="76%" valign="top"><img src="images/desktop-chat.png" alt="Enclave Desktop — a portfolio question answered with a table, streamed from the local server"></td>
+<td width="24%" valign="top"><img src="images/ios-chat.png" alt="Enclave iOS app (coming soon) — the New Conversation sheet listing prompt templates served by the server"></td>
+</tr></table>
+<p align="center"><sub>Enclave Desktop and the Enclave iOS app (coming soon), both paired to one server.</sub></p>
 
 ## Self-extension you approve
 
