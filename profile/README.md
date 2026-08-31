@@ -6,10 +6,52 @@
 
 | Component | Repo | What it is |
 |---|---|---|
+| **Setup** | [`setup`](https://github.com/vaelkeep/setup) | One command that installs the server and the desktop app, and proves it works |
 | **Server** | [`server`](https://github.com/vaelkeep/server) | The agent: Pydantic AI core, capability registry, memory pipeline, web search, loops / delegation / cron, skills with an approval gate, AG-UI + REST device protocol |
 | **Desktop** | [`desktop`](https://github.com/vaelkeep/desktop) | Electron client for macOS, Windows, and Linux |
 | **iOS** | *coming soon* | SwiftUI client for iPhone and iPad |
 | **Capabilities** | [`capabilities`](https://github.com/vaelkeep/capabilities) | Optional plugins: weather, YouTube, diagrams, GitHub, code repos, Apple integrations, budgets, travel |
+
+## Install
+
+Three paths to the same server. All you need first is a model endpoint that calls tools reliably — roughly 20B+, via Ollama, llama.cpp, vLLM, LM Studio, or anything speaking the OpenAI API. Smaller models fail at tool calling in ways that look like bugs, so every path checks this for you before you find out the hard way.
+
+### One command
+
+Installs the server, builds and pairs the desktop app, and finishes by asking the agent for a joke. Safe to re-run.
+
+```bash
+git clone https://github.com/vaelkeep/setup.git vaelkeep && cd vaelkeep
+./install.sh
+```
+
+### Docker
+
+No Python toolchain, and the way to run the server on Windows. Self-hosted search is an optional profile.
+
+```bash
+git clone https://github.com/vaelkeep/server.git && cd server
+cp .env.example .env                            # set LLM_BASE_URL / LLM_MODEL
+docker compose up -d --build                    # server only
+docker compose --profile search up -d --build   # server + SearXNG
+```
+
+### From source
+
+For macOS, where the Apple capability plugins need to run outside a container.
+
+```bash
+git clone https://github.com/vaelkeep/server.git && cd server
+uv sync && cp .env.example .env
+uv run vaelkeep doctor    # endpoint, model, tool calling, persona
+uv run vaelkeep serve
+```
+
+### Then pair a client
+
+Grab [Vaelkeep Desktop](https://github.com/vaelkeep/desktop/releases) for macOS, Windows, or Linux — or [build it from source](https://github.com/vaelkeep/desktop#-getting-started). Pair it with a code from `vaelkeep pair --host <reachable-host>`, or hand it `VAELKEEP_SERVER_URL` and `VAELKEEP_DEVICE_TOKEN` and it configures itself.
+
+**When something is wrong, ask.** `vaelkeep doctor` checks the endpoint, compares the model you configured against what your endpoint actually serves, confirms the model can call tools, and reports what it finds. It exits non-zero, so scripts and CI can gate on it.
 
 ## An app, not a bot
 
@@ -32,12 +74,11 @@ The agent writes its own skills in the open [agentskills.io](https://agentskills
 <p align="center"><img src="images/vaelkeep-environment.png" alt="Vaelkeep environment — Desktop and other AG-UI clients talking to the Vaelkeep server over AG-UI and the device REST API; the server talking to a model server (Ollama, llama.cpp, vLLM, or any OpenAI-compatible endpoint), a self-hosted SearXNG instance, and the Obsidian vault it shares with the Obsidian app" width="1000"></p>
 <p align="center"><sub>Everything inside the dashed boundary runs on one machine. Only Apple push (optional) leaves it.</sub></p>
 
-## Start here
+## Go further
 
-1. **Run the server** — [`server` → Getting Started](https://github.com/vaelkeep/server#-getting-started). Python 3.12+, `uv`, and a model endpoint that calls tools reliably (~20B+ on Ollama, or any OpenAI-compatible server).
-2. **Pair the desktop app** — install [Vaelkeep Desktop](https://github.com/vaelkeep/desktop), run `vaelkeep pair --host <reachable-host>` on the server, and enter the 6-digit pairing code in the app.
-3. **Add plugins** — `uv add "vaelkeep-capabilities[all] @ git+https://github.com/vaelkeep/capabilities"`.
-4. **Build your own client** — [`docs/client-guide.md`](https://github.com/vaelkeep/server/blob/main/docs/client-guide.md) is written so you can hand it to a coding agent and get a working client back.
+- **Add plugins** — `uv add "vaelkeep-capabilities[all] @ git+https://github.com/vaelkeep/capabilities"`, then `vaelkeep capabilities list`.
+- **Build your own client** — [`docs/client-guide.md`](https://github.com/vaelkeep/server/blob/main/docs/client-guide.md) is written so you can hand it to a coding agent and get a working client back.
+- **Make it yours** — persona files, private capabilities, and a git-tracked skills folder: [Your Own Vaelkeep](https://github.com/vaelkeep/server#-your-own-vaelkeep-private-layer).
 
 ## How is this different?
 
